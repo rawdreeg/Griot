@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Model\Hut;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class HutController extends Controller
 {
@@ -14,17 +15,7 @@ class HutController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Hut::latest()->get();
     }
 
     /**
@@ -35,7 +26,12 @@ class HutController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $hut = new Hut();
+        $hut->name = $request->name;
+        $hut->slug = str_slug( $request->name);
+        $hut->save();
+
+        return response('success', Response::HTTP_CREATED);
     }
 
     /**
@@ -46,18 +42,7 @@ class HutController extends Controller
      */
     public function show(Hut $hut)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Model\Hut  $hut
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Hut $hut)
-    {
-        //
+        return $hut;
     }
 
     /**
@@ -69,7 +54,14 @@ class HutController extends Controller
      */
     public function update(Request $request, Hut $hut)
     {
-        //
+        // auth()->user()->hut()->update($request->all());
+        $hut->update(
+            [
+                'name'=>$request->name,
+                'slug' => str_slug($request->name)
+            ]
+        );
+        return  response('success', Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -80,6 +72,7 @@ class HutController extends Controller
      */
     public function destroy(Hut $hut)
     {
-        //
+        $hut->delete();
+        return response('success', Response::HTTP_NO_CONTENT);
     }
 }

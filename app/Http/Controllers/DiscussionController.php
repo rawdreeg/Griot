@@ -53,7 +53,9 @@ class DiscussionController extends Controller
      */
     public function update(Request $request, Discussion $discussion)
     {
-        //
+        // auth()->user()->discussion()->update($request->all());
+        $discussion->update($request->all());
+        return  response('success', Response::HTTP_ACCEPTED);
     }
 
     /**
