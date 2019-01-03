@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Model\Hut;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Resources\HutResource;
 
 class HutController extends Controller
 {
@@ -15,7 +16,7 @@ class HutController extends Controller
      */
     public function index()
     {
-        return Hut::latest()->get();
+        return HutResource::collection(Hut::latest()->get());
     }
 
     /**
@@ -42,7 +43,7 @@ class HutController extends Controller
      */
     public function show(Hut $hut)
     {
-        return $hut;
+        return new HutResource($hut);
     }
 
     /**

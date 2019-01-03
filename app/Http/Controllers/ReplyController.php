@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Model\Reply;
 use Illuminate\Http\Request;
+use App\Model\Discussion;
+use Symfony\Component\HttpFoundation\Response;
+use App\Http\Resources\ReplyResource;
 
 class ReplyController extends Controller
 {
@@ -12,19 +15,9 @@ class ReplyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Discussion $discussion)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return ReplyResource::collection($discussion->replies);
     }
 
     /**
@@ -33,9 +26,10 @@ class ReplyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Discussion $discussion, Request $request)
     {
-        //
+        $reply = $discussion->replies()->create($request->all());
+        return response(['reply' => new ReplyResource($reply) ], Response::HTTP_CREATED);
     }
 
     /**
@@ -44,20 +38,9 @@ class ReplyController extends Controller
      * @param  \App\Model\Reply  $reply
      * @return \Illuminate\Http\Response
      */
-    public function show(Reply $reply)
+    public function show(Discussion $discussion, Reply $reply)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Model\Reply  $reply
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Reply $reply)
-    {
-        //
+        return new ReplyResource($reply);
     }
 
     /**
@@ -67,9 +50,11 @@ class ReplyController extends Controller
      * @param  \App\Model\Reply  $reply
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Reply $reply)
+    public function update(Discussion $discussion, Request $request, Reply $reply)
     {
-        //
+        // auth()->user()->reply()->update($request->all());
+        $reply->update($request->all());
+        return  response('success', Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -78,8 +63,9 @@ class ReplyController extends Controller
      * @param  \App\Model\Reply  $reply
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Reply $reply)
+    public function destroy(Discussion $discussion, Reply $reply)
     {
-        //
+        $reply->delete(); 
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }
