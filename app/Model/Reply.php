@@ -23,5 +23,6 @@ class Reply extends Model
     {
         return $this->hasMany(Like::class);
     }
+    
 
 }

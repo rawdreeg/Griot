@@ -7,6 +7,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
 
 class Handler extends ExceptionHandler
 {
@@ -51,15 +52,19 @@ class Handler extends ExceptionHandler
     {
         if($exception instanceof TokenInvalidException){
 
-            return response()->json('invalid token', 401);
+            return response()->json('invalid token', 403);
 
         }else if($exception instanceof TokenExpiredException){
 
-            return response()->json('expired token', 401);
+            return response()->json('expired token', 403);
+
+        }else if($exception instanceof TokenBlacklistedException){
+
+            return response()->json('expired token', 403);
 
         }else if($exception instanceof JWTException){
 
-            return response()->json('no token', 401);
+            return response()->json('no token', 400);
 
         }
         return parent::render($request, $exception);

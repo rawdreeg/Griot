@@ -10,6 +10,16 @@ use App\Http\Resources\DiscussionResource;
 class DiscussionController extends Controller
 {
     /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('jwt', ['except' => ['index','show']]);
+    }
+    
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -27,9 +37,8 @@ class DiscussionController extends Controller
      */ 
     public function store(Request $request)
     {  
-         // auth()->user()->discussion()->create($request->all());
-        Discussion::create($request->all());
-        return $response('success', Response::HTTP_CREATED);
+        auth()->user()->discussion()->create($request->all());
+        return response('success', Response::HTTP_CREATED);
 
     }
 
@@ -53,8 +62,7 @@ class DiscussionController extends Controller
      */
     public function update(Request $request, Discussion $discussion)
     {
-        // auth()->user()->discussion()->update($request->all());
-        $discussion->update($request->all());
+        auth()->user()->discussion()->update($request->all());
         return  response('success', Response::HTTP_ACCEPTED);
     }
 

@@ -11,6 +11,16 @@ use App\Http\Resources\ReplyResource;
 class ReplyController extends Controller
 {
     /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('jwt', ['except' => ['index','show']]);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -27,7 +37,7 @@ class ReplyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Discussion $discussion, Request $request)
-    {
+    {   
         $reply = $discussion->replies()->create($request->all());
         return response(['reply' => new ReplyResource($reply) ], Response::HTTP_CREATED);
     }
@@ -52,8 +62,8 @@ class ReplyController extends Controller
      */
     public function update(Discussion $discussion, Request $request, Reply $reply)
     {
-        // auth()->user()->reply()->update($request->all());
-        $reply->update($request->all());
+        auth()->user()->reply()->update($request->all());
+        //$reply->update($request->all());
         return  response('success', Response::HTTP_ACCEPTED);
     }
 

@@ -8,4 +8,5 @@ class Like extends Model
 {
     protected $guarded = [];
     //
+    
 }
