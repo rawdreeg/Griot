@@ -11,8 +11,14 @@ window.Vue = require('vue');
 
 import Vue from 'vue'
 import Vuetify from 'vuetify'
+import router from './Router/router.js'
+import User from './Helpers/User.js'
+
 
 Vue.use(Vuetify)
+window.User = User
+
+console.log(User.id())
 
 /**
  * The following block of code may be used to automatically register your
@@ -34,7 +40,7 @@ Vue.component('app-home', require('./components/AppHome.vue').default);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
- import router from './Router/router.js'
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    router
 });
