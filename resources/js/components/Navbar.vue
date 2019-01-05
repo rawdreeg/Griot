@@ -4,12 +4,57 @@
     <v-toolbar-title>Griot</v-toolbar-title>
     <v-spacer></v-spacer>
     <div class="hidden-sm-and-down">
-      <v-btn flat>Discussions</v-btn>
-      <v-btn flat>Huts</v-btn>
-      <router-link to="/login">
-        <v-btn flat>Login</v-btn>
+      <router-link v-for="item in items"
+      v-if="item.show"
+      :key="item.title"
+      :to="item.to">
+         <v-btn flat>{{item.title}}</v-btn>
       </router-link>
-      <v-btn flat>Write a post</v-btn>
-    </div>
+    </div>  
   </v-toolbar>
 </template>
+
+<script>
+export default {
+  data(){
+    return{
+      items:[
+        {
+          'title': 'Discussion',
+          to: '/discussion',
+          show: true
+        },
+        {
+          'title': 'Write a post',
+          to: '/submit',
+          show: User.isLoggedIn()
+        },
+        {
+          'title': 'Topics',
+          to: '/topics',
+          show: User.isLoggedIn()
+        },
+        {
+          'title': 'Login',
+          to: '/login',
+          show: !User.isLoggedIn()
+        },
+        {
+          'title': 'Logout',
+          to: '/logout',
+          show: User.isLoggedIn()
+        }
+      ]
+    }
+  },
+  created(){
+    EventBus.$on('logout',() => {
+      User.logout()
+    })
+  }
+}
+</script>
+
+<style>
+
+</style>

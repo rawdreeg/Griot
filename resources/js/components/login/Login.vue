@@ -16,7 +16,11 @@
             ></v-text-field>
 
 
-            <v-btn type="submit">submit</v-btn>
+            <v-btn type="submit">login</v-btn>
+              or
+            <router-link to="/signup">
+                <v-btn flat>Create account</v-btn>
+            </router-link>
         </v-form>
     </v-container>
 </template>
@@ -32,9 +36,16 @@ export default {
         }
 
     },
+    created(){
+        if(User.isLoggedIn()){
+            this.$router.push({name:'discussion'})
+        }
+    },
     methods: {
         login(){
             User.login(this.form)
+            this.$router.push({name:'discussion'})
+
         }
     },
 }

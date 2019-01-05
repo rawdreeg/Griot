@@ -5,7 +5,10 @@ class User{
     login(formData){
         const endpoint = 'http://127.0.0.1:8000/api/auth/login'
         axios.post(endpoint, formData)
-        .then(res => this.processResponse(res))
+        .then(res => {
+            this.processResponse(res)
+            window.location = '/discussion'
+        })
         .catch(error => console.log('err', error.response.data))
     }
 
@@ -33,6 +36,7 @@ class User{
 
     logout(){
         AppStorage.clear()
+        window.location = '/discussion'
     }
 
     name(){
