@@ -7,7 +7,21 @@ use App\User;
 
 class Discussion extends Model
 {
-    protected $guarded = [];
+    //protected $guarded = [];
+    protected $fillable = [
+        'title', 'slug', 'body', 'user_id','category_id'
+    ];
+
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function($discussion){
+            $discussion->slug = str_slug($discussion->title);
+        });
+    }
+
     public function getRouteKeyName()
     {
         return 'slug'; 
@@ -30,6 +44,6 @@ class Discussion extends Model
 
     public function getPathAttribute()
     {
-        return asset("api/discussion/$this->slug");
+        return "/discussion/$this->slug";
     }
 }

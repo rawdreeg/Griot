@@ -18,8 +18,11 @@ class DiscussionResource extends JsonResource
             'title' => $this->title,
             'path'=> $this->path,
             'body' => $this->body,
+            'slug' => $this->slug,
             'created_at' => $this->created_at->diffForHumans(),
-            'user' => $this->user->name
+            'user' => $this->user->name,
+            'user_id' => $this->user->id,
+            'discussion_id' => $this->id
         ];
     }
 }

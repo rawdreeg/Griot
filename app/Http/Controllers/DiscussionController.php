@@ -37,8 +37,8 @@ class DiscussionController extends Controller
      */ 
     public function store(Request $request)
     {  
-        auth()->user()->discussion()->create($request->all());
-        return response('success', Response::HTTP_CREATED);
+        $discussion = auth()->user()->discussion()->create($request->all());
+        return response( new DiscussionResource($discussion), Response::HTTP_CREATED);
 
     }
 
@@ -62,7 +62,13 @@ class DiscussionController extends Controller
      */
     public function update(Request $request, Discussion $discussion)
     {
-        auth()->user()->discussion()->update($request->all());
+        auth()->user()->discussion()->update(
+            ['title'      => $request->title, 
+            'slug'        =>  $request->slug, 
+            'body'        =>  $request->body, 
+            'user_id'     =>  $request->user_id,
+            ]
+        );
         return  response('success', Response::HTTP_ACCEPTED);
     }
 

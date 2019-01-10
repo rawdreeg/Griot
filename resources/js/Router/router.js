@@ -4,6 +4,8 @@ import Login from '../components/login/Login'
 import Signup from '../components/login/Signup'
 import Logout from '../components/login/Logout'
 import Discussion from '../components/discussion/Discussion'
+import Discuss from '../components/discussion/Discuss'
+import CreatePost from '../components/discussion/CreatePost'
 
 
 
@@ -24,6 +26,10 @@ const routes = [
          component: Signup 
      },
      { 
+        path: '/', 
+        component: Discussion, 
+     },
+     { 
          path: '/discussion', 
          component: Discussion, 
          name:'discussion'
@@ -31,6 +37,15 @@ const routes = [
      { 
         path: '/logout', 
         component: Logout
+    },
+    { 
+        path: '/discussion/:slug', 
+        component: Discuss,
+        name: 'discuss'
+    },
+    { 
+        path: '/submit', 
+        component: CreatePost    
     },
   ]
 

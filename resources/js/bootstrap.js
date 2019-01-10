@@ -21,8 +21,15 @@ try {
  */
 
 window.axios = require('axios');
+const apiToken = `Bearer ${localStorage.getItem('token')}`
+
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+if(apiToken){
+    window.axios.defaults.headers.common['Authorization'] = apiToken;
+}
+
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
