@@ -6,6 +6,7 @@ import Logout from '../components/login/Logout'
 import Discussion from '../components/discussion/Discussion'
 import Discuss from '../components/discussion/Discuss'
 import CreatePost from '../components/discussion/CreatePost'
+import CreateHut from '../components/community/CreateHut'
 
 
 
@@ -34,6 +35,10 @@ const routes = [
          component: Discussion, 
          name:'discussion'
      },
+     { 
+        path: '/hut', 
+        component: CreateHut, 
+    },
      { 
         path: '/logout', 
         component: Logout

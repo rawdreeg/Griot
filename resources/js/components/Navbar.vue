@@ -30,8 +30,8 @@ export default {
           show: User.isLoggedIn()
         },
         {
-          'title': 'Huts',
-          to: '/huts',
+          'title': 'Community',
+          to: '/hut',
           show: User.isLoggedIn()
         },
         {
