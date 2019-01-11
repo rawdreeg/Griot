@@ -9,7 +9,7 @@ class Discussion extends Model
 {
     //protected $guarded = [];
     protected $fillable = [
-        'title', 'slug', 'body', 'user_id','category_id'
+        'title', 'slug', 'body', 'user_id','category_id', 'hut_id'
     ];
 
 

@@ -37,7 +37,13 @@ class DiscussionController extends Controller
      */ 
     public function store(Request $request)
     {  
-        $discussion = auth()->user()->discussion()->create($request->all());
+        $discussion = auth()->user()->discussion()->create(
+            ['title'      => $request->title, 
+            'slug'        =>  $request->slug, 
+            'body'        =>  $request->body, 
+            'user_id'     =>  $request->user_id,
+            'hut_id'      => $request->hut_id,
+        ]);
         return response( new DiscussionResource($discussion), Response::HTTP_CREATED);
 
     }

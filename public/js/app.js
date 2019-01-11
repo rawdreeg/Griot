@@ -1873,9 +1873,67 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      form: {
+        name: null
+      },
+      huts: {}
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    var endpoint = 'http://127.0.0.1:8000/api/hut';
+    axios.get(endpoint).then(function (res) {
+      return _this.huts = res.data.data;
+    }).catch(function (error) {
+      return _this.errors = error.response.data.errors;
+    });
+  },
   methods: {
-    create: function create() {}
+    create: function create() {
+      var _this2 = this;
+
+      axios.post('http://127.0.0.1:8000/api/hut', this.form).then(function (res) {
+        return console.log(res.data);
+      }).catch(function (error) {
+        return _this2.errors = error.response.data.error;
+      });
+    },
+    edit: function edit() {},
+    destroy: function destroy() {}
   }
 });
 
@@ -20741,7 +20799,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -57371,15 +57429,98 @@ var render = function() {
               _c("v-text-field", {
                 attrs: { label: "Name", type: "text", required: "" },
                 model: {
-                  value: _vm.form.title,
+                  value: _vm.form.name,
                   callback: function($$v) {
-                    _vm.$set(_vm.form, "title", $$v)
+                    _vm.$set(_vm.form, "name", $$v)
                   },
-                  expression: "form.title"
+                  expression: "form.name"
                 }
               }),
               _vm._v(" "),
               _c("v-btn", { attrs: { type: "submit" } }, [_vm._v(" submit ")])
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card",
+            { staticClass: "mt-4" },
+            [
+              _c(
+                "v-toolbar",
+                { attrs: { dense: "" } },
+                [
+                  _c("v-toolbar-title", [_vm._v("Communities")]),
+                  _vm._v(" "),
+                  _c("v-spacer")
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-list",
+                _vm._l(_vm.huts, function(hut) {
+                  return _c(
+                    "div",
+                    { key: hut.hut_id },
+                    [
+                      _c(
+                        "v-list-tile",
+                        [
+                          _c(
+                            "v-list-tile-content",
+                            [
+                              _c("v-list-tile-title", [
+                                _vm._v(_vm._s(hut.name))
+                              ])
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-tile-actions",
+                            [
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { flat: "", value: "edit" },
+                                  on: { click: _vm.edit }
+                                },
+                                [
+                                  _c("v-icon", [_vm._v("edit")]),
+                                  _vm._v(" "),
+                                  _c("span", [_vm._v("Edit")])
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { flat: "", value: "delete" },
+                                  on: { click: _vm.destroy }
+                                },
+                                [
+                                  _c("v-icon", [_vm._v("delete")]),
+                                  _vm._v(" "),
+                                  _c("span", [_vm._v("Delete")])
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-divider")
+                    ],
+                    1
+                  )
+                }),
+                0
+              )
             ],
             1
           )
