@@ -43,7 +43,7 @@ class HutController extends Controller
         $hut->slug = str_slug( $request->name);
         $hut->save();
 
-        return response('success', Response::HTTP_CREATED);
+        return response(new HutResource($hut), Response::HTTP_CREATED);
     }
 
     /**

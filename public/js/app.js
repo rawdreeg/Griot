@@ -1903,37 +1903,77 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       form: {
         name: null
       },
-      huts: {}
+      huts: {},
+      errors: {},
+      editSlug: null
     };
   },
   created: function created() {
-    var _this = this;
-
-    var endpoint = 'http://127.0.0.1:8000/api/hut';
-    axios.get(endpoint).then(function (res) {
-      return _this.huts = res.data.data;
-    }).catch(function (error) {
-      return _this.errors = error.response.data.errors;
-    });
+    this.getHuts();
   },
   methods: {
-    create: function create() {
-      var _this2 = this;
+    submit: function submit() {
+      if (this.editSlug) {
+        this.update();
+      } else {
+        this.create();
+      }
+    },
+    edit: function edit(index) {
+      this.form.name = this.huts[index].name;
+      this.editSlug = this.huts[index].slug;
+      this.huts.splice(index, 1);
+    },
+    destroy: function destroy(slug) {
+      var _this = this;
 
-      axios.post('http://127.0.0.1:8000/api/hut', this.form).then(function (res) {
-        return console.log(res.data);
+      axios.delete("http://127.0.0.1:8000/api/hut/".concat(slug)).then(function (res) {
+        _this.getHuts();
       }).catch(function (error) {
-        return _this2.errors = error.response.data.error;
+        return _this.errors = error.response.data.error;
       });
     },
-    edit: function edit() {},
-    destroy: function destroy() {}
+    getHuts: function getHuts() {
+      var _this2 = this;
+
+      var endpoint = 'http://127.0.0.1:8000/api/hut';
+      axios.get(endpoint).then(function (res) {
+        return _this2.huts = res.data.data;
+      }).catch(function (error) {
+        return _this2.errors = error.response.data.errors;
+      });
+    },
+    update: function update() {
+      var _this3 = this;
+
+      axios.patch('http://127.0.0.1:8000/api/hut/' + this.editSlug, this.form).then(function (res) {
+        _this3.getHuts();
+
+        _this3.form.name = null;
+        _this3.editSlug = null;
+      }).catch(function (error) {
+        return _this3.errors = error.response.data.error;
+      });
+    },
+    create: function create() {
+      var _this4 = this;
+
+      axios.post('http://127.0.0.1:8000/api/hut', this.form).then(function (res) {
+        _this4.getHuts();
+
+        _this4.form.name = null;
+      }).catch(function (error) {
+        return _this4.errors = error.response.data.error;
+      });
+    }
   }
 });
 
@@ -20799,7 +20839,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -57421,7 +57461,7 @@ var render = function() {
               on: {
                 submit: function($event) {
                   $event.preventDefault()
-                  return _vm.create($event)
+                  return _vm.submit($event)
                 }
               }
             },
@@ -57437,7 +57477,37 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
-              _c("v-btn", { attrs: { type: "submit" } }, [_vm._v(" submit ")])
+              _c(
+                "v-btn",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: !_vm.editSlug,
+                      expression: "!editSlug"
+                    }
+                  ],
+                  attrs: { type: "submit" }
+                },
+                [_vm._v(" submit ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.editSlug,
+                      expression: "editSlug"
+                    }
+                  ],
+                  attrs: { type: "submit" }
+                },
+                [_vm._v(" Update ")]
+              )
             ],
             1
           ),
@@ -57459,7 +57529,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "v-list",
-                _vm._l(_vm.huts, function(hut) {
+                _vm._l(_vm.huts, function(hut, index) {
                   return _c(
                     "div",
                     { key: hut.hut_id },
@@ -57484,7 +57554,11 @@ var render = function() {
                                 "v-btn",
                                 {
                                   attrs: { flat: "", value: "edit" },
-                                  on: { click: _vm.edit }
+                                  on: {
+                                    click: function($event) {
+                                      _vm.edit(index)
+                                    }
+                                  }
                                 },
                                 [
                                   _c("v-icon", [_vm._v("edit")]),
@@ -57498,7 +57572,11 @@ var render = function() {
                                 "v-btn",
                                 {
                                   attrs: { flat: "", value: "delete" },
-                                  on: { click: _vm.destroy }
+                                  on: {
+                                    click: function($event) {
+                                      _vm.destroy(hut.slug)
+                                    }
+                                  }
                                 },
                                 [
                                   _c("v-icon", [_vm._v("delete")]),
